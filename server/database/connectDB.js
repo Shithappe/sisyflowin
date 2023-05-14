@@ -4,8 +4,8 @@ dotenv.config();
 
 const connection = mysql.createConnection({
   host: 'localhost',
+  database: process.env.DB_NAME,
   user: process.env.DB_USER,
-  database: 'WishList',
   password: process.env.DB_PASSWORD,
 });
  connection.connect(function(err){
