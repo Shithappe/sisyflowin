@@ -1,3 +1,4 @@
+-- Active: 1634680164153@@localhost@3306@sisyflowin
 CREATE DATABASE WishList;
 USE WishList;
 
