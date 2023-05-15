@@ -3,10 +3,10 @@ import { onMounted } from 'vue';
 import Cookies from 'cookies-js';
 import AuthComponent from './AuthComponent.vue';
 
-onMounted(() => {
-      console.log('Component mounted');
-      console.log(Cookies.get('token'));
-    });
+// onMounted(() => {
+//     //   console.log('Component mounted');
+//       console.log(Cookies.get('token'));
+//     });
 </script>
 
 <template>

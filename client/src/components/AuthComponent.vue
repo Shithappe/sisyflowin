@@ -4,12 +4,20 @@ import axios from 'axios';
 import Cookies from 'cookies-js';
 import InputWithError from './InputWithError.vue';
 
+const ApiUrl = import.meta.env.VITE_API_URL;
 
 onMounted(() => {
-      if (Cookies.get('token')) { // check token and redirect 
-        console.log(Cookies.get('token'));
-      }
-    });
+    if (Cookies.get('token')) {
+        axios.get(`http://${ApiUrl}/api/user/checkToken`, { headers: { Authorization: Cookies.get('token') }})
+        .then(response => {
+            console.log('true token');
+            // redirect
+        })
+        .catch(error => {
+            console.log(error.response.data);
+        })
+    }
+});
 
 const isLogin = ref(true);
 
@@ -24,8 +32,18 @@ const FormRegister = reactive({
     password: ''
 });
 
-const handleSubmit = async () => {
-    axios.post('http://localhost:8000/api/user/login', FormLogin)
+const handleLoginSubmit = async () => {
+    axios.post(`http://${ApiUrl}/api/user/login`, FormLogin)
+        .then(response => {
+            Cookies.set('token', response.data.token);
+        })
+        .catch(error => {
+            console.log(error.response.data);
+        })
+};
+
+const handleRegisterSubmit = async () => {
+    axios.post(`http://${ApiUrl}/api/user/register`, FormLogin)
         .then(response => {
             Cookies.set('token', response.data.token);
         })
@@ -38,17 +56,39 @@ const handleSubmit = async () => {
 
 <template>
     <main>
+        <div v-if="isLogin">
+            <h2>Login</h2>
+            <form @submit.prevent="handleLoginSubmit">
+                <InputWithError v-model="FormLogin.email" type="text" placeholder="Email" />
+                <input type="password" v-model="FormLogin.password" placeholder="password" />
+                <button type="submit">Login</button>
 
-        <h2>Login</h2>
-        <form @submit.prevent="handleSubmit">
-            <InputWithError v-model="FormLogin.email" type="text" placeholder="Email" />
-            <input type="password" v-model="FormLogin.password" placeholder="password" />
-            <button type="submit">Login</button>
-        </form>
-
-        <div>
-
+                <div>
+                    <button @click="isLogin = false">Haven'y account?</button>
+                    <button>Remember password</button>
+                </div>
+            </form>
         </div>
+
+        <div v-else>
+            <h2>Register</h2>
+            <form @submit.prevent="handleRegisterSubmit">
+                <InputWithError v-model="FormRegister.username" type="text" placeholder="Username" />
+                <InputWithError v-model="FormRegister.email" type="text" placeholder="Email" />
+
+                <input type="password" v-model="FormRegister.password" placeholder="Password" />
+                <input type="password" v-model="FormRegister.password" placeholder="Comfirme password" />
+                <button type="submit">Register</button>
+
+                <div>
+                    <button @click="isLogin = false">Haven'y account?</button>
+                    <button>Remember password</button>
+                </div>
+            </form>
+
+            <button @click="isLogin = true">Have account?</button>
+        </div>
+
 
     </main>
 </template>
@@ -56,7 +96,7 @@ const handleSubmit = async () => {
 
 
 <style scoped>
-main{
+main {
     border: 2px solid white;
     width: 25vw;
     display: flex;
@@ -67,7 +107,7 @@ main{
     padding: 1rem;
 }
 
-form{
+form {
     display: flex;
     flex-direction: column;
     gap: 1rem;

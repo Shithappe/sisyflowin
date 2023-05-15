@@ -79,7 +79,6 @@ router.post('/login', function (req, res) {
 });
 
 router.get('/checkToken', verify, (req, res) => {
-
     res.status(200).send();
 });
 
