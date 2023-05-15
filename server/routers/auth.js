@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const verify = require('./verifyToken');
 const Joi = require('@hapi/joi');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');    
@@ -75,6 +76,11 @@ router.post('/login', function (req, res) {
     catch(err){
         res.status(400).send(err);
     }
+});
+
+router.get('/checkToken', verify, (req, res) => {
+
+    res.status(200).send();
 });
 
 

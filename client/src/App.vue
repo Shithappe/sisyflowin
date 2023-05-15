@@ -20,6 +20,15 @@ import HelloWorld from './components/HelloWorld.vue'
   <RouterView />
 </template>
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+
+*{
+  font-family: 'Montserrat', sans-serif;
+}
+</style>
+
+
 <style scoped>
 header {
   line-height: 1.5;
