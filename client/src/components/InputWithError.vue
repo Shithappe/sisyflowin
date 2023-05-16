@@ -4,9 +4,18 @@ import { onMounted, ref } from 'vue';
 defineProps({
     modelValue: [String, Number],
     placeholder: String,
+    required: Boolean,
     type: {
         type: String,
         default: 'text',
+    },
+    errorTaget: {
+        type: String,
+        default: null,
+    },
+    errorMessage: {
+        type: String,
+        default: null,
     },
 });
 
@@ -24,12 +33,10 @@ defineExpose({ focus: () => input.value.focus() });
 </script>
 
 <template>
-    <input
-        :type="type"
-        ref="input"
-        class="block w-full rounded-lg border-none bg-urctrl-light-gray p-5 text-base transition duration-200 ease-in-out focus:ring-urctrl-blue"
-        :placeholder="placeholder"
-        :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
-    />
+    <div>
+        <input :type="type" ref="input" :required="required"
+            class="block w-full rounded-lg border-none p-5 text-base transition duration-200 ease-in-out"
+            :placeholder="placeholder" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />
+        <span>{{ errorMessage }}</span>
+    </div>
 </template>
